@@ -9,11 +9,32 @@ token    = config["tgbot"]["token"]
 bot = telebot.TeleBot(token)
 
 translator = Translator()
+
 @bot.message_handler(commands=["start"])
 def start_message(message):
     markup = telebot.types.InlineKeyboardMarkup()
     markup.add(telebot.types.InlineKeyboardButton(text='Перевести!',callback_data=3))
-    bot.send_message(message.chat.id, "Добро пожаловать! \nЯ переводчик и готов перевести слова или придложения \nК примеру :Hello-Привет, Привет-Hello. Нажми на перевести!\n Техподержка: @theworldsfox\t Код:", reply_markup = markup)
+    bot.send_message(message.chat.id, "Добро пожаловать!\nЯ переводчик и готов перевести слова или придложения \nК примеру :Hello-Привет, Привет-Hello. Нажми на перевести!\n Техподержка: /id", reply_markup = markup)
+
+keyboardcode = types.InlineKeyboardMarkup()
+url_button = types.InlineKeyboardButton(text="Получить код!", url="https://github.com/wefeinew/codebot/tree/main")
+keyboardcode.add(url_button)
+
+@bot.message_handler(commands=["code"])
+def cmd_code(message):
+    bot.send_message(message.chat.id, "Для получение исходоного кода нажмите на кнопку ниже.", reply_markup=keyboardcode)
+
+keyboard_id = types.InlineKeyboardMarkup()
+url_button = types.InlineKeyboardButton(text="Поддержка", url="https://t.me/theworldsfox")
+keyboard_id.add(url_button)
+
+@bot.message_handler(commands=["id"])
+def foo(message):
+    bot.send_message(message.chat.id, "Поддержка ниже.", reply_markup=keyboard)
+
+@bot.message_handler()
+def info(message: types.Message):
+    bot.send_message(message.chat.id, 'Неизвестная команда⚠️\nСписок команд вы можете посмотреть в меню')
 
 @bot.message_handler(content_types=["text"])
 def send_text(message):
@@ -79,4 +100,4 @@ def query_handler(call):
         bot.edit_message_text(chat_id = call.message.chat.id, message_id = call.message.message_id, text = "Вы вернулись в главное меню!", reply_markup = markup)
 
 
-bot.polling()
+bot.polling(none_stop=True, interval=0)
