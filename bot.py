@@ -24,7 +24,7 @@ MAT_WORDS = ['пицес', 'пиздец', 'трахал', 'ахуеть', 'ах
 MAT_REGEX = re.compile('(?:\s|^)' + '|'.join(MAT_WORDS) + '(?:\s|$)')
 
 # Создание бота
-bot = telebot.TeleBot("2043194007:AAFLOo4yPUaRtI6jo8fXzBJckcGpEbOAyC4")
+bot = telebot.TeleBot("token")
 
 @bot.message_handler(commands=['ban'])
 def ban_user(message):
